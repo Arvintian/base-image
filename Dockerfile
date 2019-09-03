@@ -27,7 +27,7 @@ RUN wget -P /tmp -O node.tgz "https://nodejs.org/dist/${NODE_VERSION}/node-${NOD
 
 # docker client
 ENV DOCKER_VERSION 18.09.8
-# If you're using kubernetes you should run a docker:bind container in the same pod.
+# If you're using kubernetes you should run a docker:dind container in the same pod.
 ENV DOCKER_HOST='tcp://localhost:2375'
 RUN wget -P /tmp -O docker.tgz "https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz" && \
     tar --extract --file /tmp/docker.tgz --strip-components 1 --directory /usr/local/bin/
