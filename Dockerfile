@@ -20,9 +20,6 @@ RUN apt install -y tzdata && ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime && 
 RUN sed -i '/session    required     pam_loginuid.so/c\#session    required   pam_loginuid.so' /etc/pam.d/cron
 RUN sed -i '/session    required   pam_limits.so/c\#session    required   pam_limits.so' /etc/pam.d/cron
 
-# add user
-RUN useradd -rm -d /home/arvin -s /bin/bash -G sudo -p "$(openssl passwd -1 arvin)" arvin
-
 # prepare
 RUN mkdir /compiler
 ENV COMPILER_PATH /compiler
@@ -50,6 +47,7 @@ RUN wget -O /tmp/node.tgz "https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_V
 RUN apt-get install -y nginx
 RUN apt-get install -y php7.2-fpm php7.2-common php7.2-json php7.2-gd php7.2-cli php7.2-mbstring php7.2-xml \
     php7.2-opcache php7.2-mysql php7.2-curl php-redis php7.2-bcmath php7.2-zip
+ADD nginx/default /etc/nginx/sites-available/default
 
 # nginx && fpm log
 # RUN ln -sfT /dev/stderr "/var/log/nginx/error.log" && ln -sfT /dev/stdout "/var/log/nginx/access.log"
@@ -64,6 +62,10 @@ RUN apt-get install -y php7.2-fpm php7.2-common php7.2-json php7.2-gd php7.2-cli
 
 # setup
 ENV PATH=${COMPILER_PATH}/miniconda3/bin:${COMPILER_PATH}/miniconda2/bin:${COMPILER_PATH}/go/bin:${COMPILER_PATH}/node/bin:${PATH}
+
+# add user
+RUN useradd -rm -d /home/ubuntu -s /bin/bash -G sudo -p "$(openssl passwd -1 ubuntu)" ubuntu
+RUN echo $PATH >> /home/ubuntu/.bashrc
 
 # clean
 RUN rm -rf /tmp/*
