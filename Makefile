@@ -6,3 +6,4 @@ build:
 
 publish:
 	docker tag $(PROJECT):$(VERSION) registry.cn-beijing.aliyuncs.com/arvintian/$(PROJECT):$(VERSION)
+	docker push registry.cn-beijing.aliyuncs.com/arvintian/$(PROJECT):$(VERSION)
