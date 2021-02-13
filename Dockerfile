@@ -1,6 +1,8 @@
 FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND noninteractive
+ADD apt/sources.list /etc/apt/sources.list
+RUN chmod 644 /etc/apt/sources.list
 RUN apt-get update
 
 # base build
@@ -48,6 +50,7 @@ RUN apt-get install -y nginx
 RUN apt-get install -y php7.2-fpm php7.2-common php7.2-json php7.2-gd php7.2-cli php7.2-mbstring php7.2-xml \
     php7.2-opcache php7.2-mysql php7.2-curl php-redis php7.2-bcmath php7.2-zip
 ADD nginx/default /etc/nginx/sites-available/default
+RUN chmod 644 /etc/nginx/sites-available/default
 
 # nginx && fpm log
 # RUN ln -sfT /dev/stderr "/var/log/nginx/error.log" && ln -sfT /dev/stdout "/var/log/nginx/access.log"
@@ -65,11 +68,12 @@ ENV PATH=${COMPILER_PATH}/miniconda3/bin:${COMPILER_PATH}/miniconda2/bin:${COMPI
 
 # add user
 RUN useradd -rm -d /home/ubuntu -s /bin/bash -G sudo -p "$(openssl passwd -1 ubuntu)" ubuntu
-RUN echo $PATH >> /home/ubuntu/.bashrc
+RUN echo "export PATH=$PATH" >> /home/ubuntu/.bashrc
 
 # clean
 RUN rm -rf /tmp/*
 
 COPY entrypoint.py /entrypoint/
+COPY init.json /entrypoint/
 
-ENTRYPOINT ["dumb-init","python", "/entrypoint/entrypoint.py"]
+ENTRYPOINT ["dumb-init","python","-u","/entrypoint/entrypoint.py"]

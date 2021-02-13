@@ -5,4 +5,4 @@ build:
 	docker build -t $(PROJECT):$(VERSION) .
 
 publish:
-	docker tag $(PROJECT):$(VERSION) registry.cn-shanghai.aliyuncs.com/arvintian/$(PROJECT):$(VERSION)
+	docker tag $(PROJECT):$(VERSION) registry.cn-beijing.aliyuncs.com/arvintian/$(PROJECT):$(VERSION)
