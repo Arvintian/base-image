@@ -63,6 +63,10 @@ RUN chmod 644 /etc/nginx/sites-available/default
 # RUN wget -O /tmp/docker.tgz "https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz" && \
 #     tar --extract --file /tmp/docker.tgz --strip-components 1 --directory /usr/local/bin/
 
+# nginx & rsyslog logrotate
+RUN sed -i 's+invoke-rc.d nginx rotate >/dev/null 2>&1+/etc/init.d/nginx rotate+' /etc/logrotate.d/nginx
+RUN sed -i 's+/usr/lib/rsyslog/rsyslog-rotate+/etc/init.d/rsyslog rotate+' /etc/logrotate.d/rsyslog
+
 # setup
 ENV PATH=${COMPILER_PATH}/miniconda3/bin:${COMPILER_PATH}/miniconda2/bin:${COMPILER_PATH}/go/bin:${COMPILER_PATH}/node/bin:${PATH}
 

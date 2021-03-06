@@ -34,3 +34,4 @@ docker pull arvintian/base-image:<version>
 - php 7.2
 - cron
 - rsyslog
+- nginx
