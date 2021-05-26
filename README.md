@@ -25,7 +25,7 @@ docker pull arvintian/base-image:<version>
 - node 10.16.3
 - php 7.2
 
-## 1.2.0
+## 1.2.1
 - ubuntu 18.04
 - python3 3.7
 - python2 2.7
