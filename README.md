@@ -35,3 +35,14 @@ docker pull arvintian/base-image:<version>
 - cron
 - rsyslog
 - nginx
+
+## 1.3.0
+- ubuntu 18.04
+- python3 3.7
+- python2 2.7
+- go 1.16.7
+- node 10.16.3
+- php 7.2
+- cron
+- rsyslog
+- nginx
