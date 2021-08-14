@@ -43,12 +43,12 @@ def main():
 
     def daily_restart():
         print("*Start daily restart thread")
-        schedule.every(1).minutes.do(restart_services)
+        schedule.every().day.at("00:30").do(restart_services)
         while True:
             schedule.run_pending()
             time.sleep(1)
 
-    threading.Thread(target=daily_restart, daemon=True)
+    threading.Thread(target=daily_restart, daemon=True).run()
 
     # exit and kill services
     def exit_kill(sig, frame):

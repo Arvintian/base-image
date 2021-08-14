@@ -3,12 +3,14 @@ FROM ubuntu:18.04
 ENV DEBIAN_FRONTEND noninteractive
 ADD apt/sources.list /etc/apt/sources.list
 RUN chmod 644 /etc/apt/sources.list && apt-get update && mkdir /compiler
+RUN apt-get install -y openssl
+# add user
 RUN userdel -r www-data && useradd -rm -d /home/www -u 33 -U -s /bin/bash -G sudo -p "$(openssl passwd -1 www-data)" www-data && \
     useradd -rm -d /home/ubuntu -s /bin/bash -G sudo -p "$(openssl passwd -1 ubuntu)" ubuntu
 
 # base build
 ENV TZ=Asia/Shanghai
-RUN apt-get install -y apt-utils vim wget curl iputils-ping build-essential sudo openssl openssh-server dumb-init rsyslog cron net-tools && \
+RUN apt-get install -y apt-utils vim wget curl iputils-ping build-essential sudo openssh-server dumb-init rsyslog cron net-tools && \
     apt-get install -y locales && locale-gen en_US.UTF-8 && \
     apt-get install -y tzdata && ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone && \
     dpkg-reconfigure --frontend noninteractive tzdata
@@ -44,7 +46,6 @@ RUN sed -i 's+invoke-rc.d nginx rotate >/dev/null 2>&1+/etc/init.d/nginx rotate+
 # setup
 ENV PATH=${COMPILER_PATH}/miniconda3/bin:${COMPILER_PATH}/miniconda2/bin:${COMPILER_PATH}/go/bin:${COMPILER_PATH}/node/bin:${PATH}
 
-# add user
 RUN echo "export PATH=$PATH" >> /home/ubuntu/.bashrc && echo "export PATH=$PATH" >> /home/www/.bashrc
 
 ADD requirements.txt /entrypoint/
