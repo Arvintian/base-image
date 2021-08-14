@@ -3,6 +3,8 @@ FROM ubuntu:18.04
 ENV DEBIAN_FRONTEND noninteractive
 ADD apt/sources.list /etc/apt/sources.list
 RUN chmod 644 /etc/apt/sources.list && apt-get update && mkdir /compiler
+RUN userdel -r www-data && useradd -rm -d /home/www -u 33 -U -s /bin/bash -G sudo -p "$(openssl passwd -1 www-data)" www-data && \
+    useradd -rm -d /home/ubuntu -s /bin/bash -G sudo -p "$(openssl passwd -1 ubuntu)" ubuntu
 
 # base build
 ENV TZ=Asia/Shanghai
@@ -43,8 +45,10 @@ RUN sed -i 's+invoke-rc.d nginx rotate >/dev/null 2>&1+/etc/init.d/nginx rotate+
 ENV PATH=${COMPILER_PATH}/miniconda3/bin:${COMPILER_PATH}/miniconda2/bin:${COMPILER_PATH}/go/bin:${COMPILER_PATH}/node/bin:${PATH}
 
 # add user
-RUN useradd -rm -d /home/ubuntu -s /bin/bash -G sudo -p "$(openssl passwd -1 ubuntu)" ubuntu && echo "export PATH=$PATH" >> /home/ubuntu/.bashrc
+RUN echo "export PATH=$PATH" >> /home/ubuntu/.bashrc && echo "export PATH=$PATH" >> /home/www/.bashrc
 
+ADD requirements.txt /entrypoint/
+RUN pip install -r /entrypoint/requirements.txt
 COPY entrypoint.py /entrypoint/
 
 CMD ["dumb-init","python","-u","/entrypoint/entrypoint.py"]
