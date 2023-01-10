@@ -1,11 +1,21 @@
-VERSION     = 1.4.0
-PROJECT     = base-image
+VERSION	= 2.1.0
+PROJECT	= base-image
+IMAGE	= arvintian/base-image
+ARCHITECTURES = amd64 arm64 arm
 
+.PHONY: build
 build:
-	docker build -t $(PROJECT):$(VERSION) .
+	for ARCH in $(ARCHITECTURES) ; do \
+		docker buildx build \
+			-t $(IMAGE)-$$ARCH:$(VERSION) \
+			--platform linux/$$ARCH \
+			. ; \
+	done ; \
 
-publish:
-	docker tag $(PROJECT):$(VERSION) registry.cn-beijing.aliyuncs.com/arvintian/$(PROJECT):$(VERSION)
-	docker push registry.cn-beijing.aliyuncs.com/arvintian/$(PROJECT):$(VERSION)
+.PHONY: manifest-bundle
+manifest-bundle: build
 	docker tag $(PROJECT):$(VERSION) arvintian/$(PROJECT):$(VERSION)
+
+.PHONY: push
+push: manifest-bundle
 	docker push arvintian/$(PROJECT):$(VERSION)
