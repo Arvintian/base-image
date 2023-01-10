@@ -2,6 +2,7 @@ VERSION	= 2.1.0
 PROJECT	= base-image
 IMAGE	= arvintian/base-image
 ARCHITECTURES = amd64 arm64 arm
+IMAGE_NAMES += $(foreach arch, $(ARCHITECTURES), $(IMAGE)-$(arch):$(VERSION))
 
 .PHONY: build
 build:
@@ -10,12 +11,12 @@ build:
 			-t $(IMAGE)-$$ARCH:$(VERSION) \
 			--platform linux/$$ARCH \
 			. ; \
-	done ; \
-
-.PHONY: manifest-bundle
-manifest-bundle: build
-	docker tag $(PROJECT):$(VERSION) arvintian/$(PROJECT):$(VERSION)
+	done ;
 
 .PHONY: push
-push: manifest-bundle
-	docker push arvintian/$(PROJECT):$(VERSION)
+push:
+	for ARCH in $(ARCHITECTURES) ; do \
+		docker push $(IMAGE)-$$ARCH:$(VERSION) ; \
+	done ;
+	docker manifest create --amend $(IMAGE):$(VERSION) $(IMAGE_NAMES)
+	docker manifest push $(IMAGE):$(VERSION)

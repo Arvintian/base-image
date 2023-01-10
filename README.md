@@ -5,6 +5,7 @@ docker pull arvintian/base-image:<version>
 ```
 
 ## 2.1.0
+
 - ubuntu 18.04
 - python3 3.9
 - python2 2.7
@@ -15,3 +16,14 @@ docker pull arvintian/base-image:<version>
 - rsyslog
 - nginx
 - supervisor
+
+## Platforms
+
+- amd64
+- arm64
+- arm
+
+## FYI
+
+- miniconda python3 not support on arm, replaced with deb python3.
+- miniconda python2 not support on arm64/arm, replaced with deb python2.
