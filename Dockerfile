@@ -29,12 +29,11 @@ RUN chmod 644 /etc/apt/sources.list && apt-get update && mkdir /compiler && \
 
 # compilers
 ENV COMPILER_PATH=/compiler MINICONDA3_VERSION=py39_4.12.0 MINICONDA2_VERSION=py27_4.8.3 GOLANG_VERSION=1.19.3 NODE_VERSION=v16.18.0
-COPY compilers/$TARGETOS/$TARGETARCH/install.sh /tmp/ 
+ENV PATH=${COMPILER_PATH}/miniconda3/bin:${COMPILER_PATH}/miniconda2/bin:${COMPILER_PATH}/go/bin:${COMPILER_PATH}/node/bin:${PATH}
+COPY compilers/$TARGETOS/$TARGETARCH/install.sh /tmp/
 RUN chmod +x /tmp/install.sh && /tmp/install.sh && rm -rf /tmp/* && rm -rf /var/lib/apt/lists/*
 
 # setup
-ENV PATH=${COMPILER_PATH}/miniconda3/bin:${COMPILER_PATH}/miniconda2/bin:${COMPILER_PATH}/go/bin:${COMPILER_PATH}/node/bin:${PATH}
-
 ADD nginx/default /etc/nginx/sites-available/default
 ADD requirements.txt /entrypoint/
 COPY entrypoint.py /entrypoint/
