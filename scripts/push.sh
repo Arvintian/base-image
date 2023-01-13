@@ -8,7 +8,7 @@ sleep_time=5
 for ((i=1; i<=$retry_times; i++)) 
 do
     # 执行命令，并获取返回值保存到变量中 
-    result=$(make push)
+    result=$(make $1)
     # 判断命令是否执行成功 
     if [ $? -eq 0 ]; then 
         # 成功退出循环 

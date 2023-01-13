@@ -4,7 +4,7 @@
 docker pull arvintian/base-image:<version>
 ```
 
-## 2.3.0
+## 2.4.0
 
 - ubuntu 18.04
 - python3 3.9
