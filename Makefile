@@ -1,4 +1,4 @@
-VERSION	= 2.4.0
+VERSION	= 3.0.0
 PROJECT	= base-image
 IMAGE	= arvintian/base-image
 ARCHITECTURES = amd64 arm64 arm

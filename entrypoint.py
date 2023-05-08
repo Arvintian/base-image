@@ -22,7 +22,7 @@ def restart_service(service):
 
 
 def main():
-    services = ["ssh", "rsyslog", "cron", "nginx", "php7.2-fpm"]
+    services = ["ssh", "cron", "nginx", "php8.1-fpm"]
 
     # start services
     for svc in services:

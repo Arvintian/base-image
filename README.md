@@ -17,6 +17,18 @@ docker pull arvintian/base-image:<version>
 - nginx
 - supervisor
 
+## 3.0.0
+
+- ubuntu 22.04
+- python3 3.9
+- python2 2.7
+- go 1.19.3
+- node 16.18.0
+- php 8.1
+- cron
+- nginx
+- supervisor
+
 ## Platforms
 
 - amd64

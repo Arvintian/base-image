@@ -3,8 +3,8 @@ set -e
 # https://github.com/conda/conda/issues/10723
 # wget -O /tmp/miniconda3.sh "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-${MINICONDA3_VERSION}-Linux-aarch64.sh" && \
 # chmod a+x /tmp/miniconda3.sh && /tmp/miniconda3.sh -p ${COMPILER_PATH}/miniconda3 -b && \
-apt install -y python3 python3-pip python3-apt python3.8 python3.8-dev && mkdir -p /compiler/miniconda3/bin && \
-ln -s /usr/bin/python3.8 /compiler/miniconda3/bin/python3 && ln -s /usr/bin/python3.8 /compiler/miniconda3/bin/python && \
+apt install -y python3 python3-pip python3-apt python3.10 python3.10-dev && mkdir -p /compiler/miniconda3/bin && \
+ln -s /usr/bin/python3.10 /compiler/miniconda3/bin/python3 && ln -s /usr/bin/python3.10 /compiler/miniconda3/bin/python && \
 cp /usr/bin/pip3 /compiler/miniconda3/bin/pip && sed -i 's+/usr/bin/python3+/usr/bin/env python3+g' /compiler/miniconda3/bin/pip && pip install -U pip
 tee /compiler/miniconda3/bin/pip >/dev/null << EOF
 #!/compiler/miniconda3/bin/python

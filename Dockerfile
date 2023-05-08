@@ -1,10 +1,10 @@
-FROM --platform=$TARGETPLATFORM ubuntu:18.04
+FROM --platform=$TARGETPLATFORM ubuntu:22.04
 
 ARG TARGETOS
 ARG TARGETARCH
 
 # base
-ENV DEBIAN_FRONTEND noninteractive TZ=Asia/Shanghai LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive TZ=Asia/Shanghai LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
 ADD apt/$TARGETOS/$TARGETARCH/sources.list /etc/apt/sources.list
 RUN chmod 644 /etc/apt/sources.list && apt-get update && mkdir /compiler && \
     apt-get install -y apt-utils openssl ca-certificates && \
@@ -17,13 +17,12 @@ RUN chmod 644 /etc/apt/sources.list && apt-get update && mkdir /compiler && \
     apt-get install -y tzdata && ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone && \
     dpkg-reconfigure --frontend noninteractive tzdata && \
     # php
-    apt-get install -y nginx php7.2-fpm php7.2-common php7.2-json php7.2-gd php7.2-cli php7.2-mbstring php7.2-xml \
-    php7.2-opcache php7.2-mysql php7.2-curl php-redis php7.2-bcmath php7.2-zip php-sqlite3 && \
+    apt-get install -y nginx php8.1-fpm php8.1-common php-json php8.1-gd php8.1-cli php8.1-mbstring php8.1-xml \
+    php8.1-opcache php8.1-mysql php8.1-curl php-redis php8.1-bcmath php8.1-zip php-sqlite3 && \
     # nginx & rsyslog logrotate & fix cron
     # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=726661
     # https://stackoverflow.com/questions/43323754/cannot-make-remove-an-entry-for-the-specified-session-cron
     sed -i 's+invoke-rc.d nginx rotate >/dev/null 2>&1+/etc/init.d/nginx rotate+' /etc/logrotate.d/nginx && \
-    sed -i 's+/usr/lib/rsyslog/rsyslog-rotate+/etc/init.d/rsyslog rotate+' /etc/logrotate.d/rsyslog && \
     sed -i '/session    required     pam_loginuid.so/c\#session    required   pam_loginuid.so' /etc/pam.d/cron && \
     sed -i '/session    required   pam_limits.so/c\#session    required   pam_limits.so' /etc/pam.d/cron
 
